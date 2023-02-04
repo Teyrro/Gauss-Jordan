@@ -36,4 +36,5 @@ std::ostream& operator<<(std::ostream& out, Matrix const& matrix){
         std::cout << "\n";
     }
     std::cout << "\n";
+    return out;
 }

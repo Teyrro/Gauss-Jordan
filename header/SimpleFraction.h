@@ -11,16 +11,29 @@
 
 class SimpleFraction {
 private:
-    SimpleFraction GetSimpleFractSumSubtr(SimpleFraction const & a,bool isSum) const;
-    SimpleFraction GetSimpleFractMultDiv(SimpleFraction const & a, bool isMult) const;
-    SimpleFraction GetSimpleFractMultDiv(int const & a, bool isMult) const;
+    [[nodiscard]] SimpleFraction GetSimpleFractSumSubtr(SimpleFraction const & a,bool isSum) const;
+    [[nodiscard]] SimpleFraction GetSimpleFractMultDiv(SimpleFraction const & a, bool isMult) const;
+    [[nodiscard]] SimpleFraction GetSimpleFractMultDiv(int const & a) const;
+    long long GCD(long long a, long long b);
 public:
-    int numerator, denominator;
+    long long numerator, denominator;
     SimpleFraction() : numerator(0), denominator(1){}
-    SimpleFraction(int num, int denom) : numerator(num), denominator(denom) {
+    SimpleFraction(long long num, long long denom) : numerator(num), denominator(denom) {
+        long long div(1);
+        do {
+            div = GCD(numerator, denominator);
+            numerator /= div;
+            denominator /= div;
+        } while (div  != 1);
+
+        if (denominator < 0) {
+            denominator *= -1;
+            numerator *= -1;
+        }
+
         if (denom < 1) throw ;
     }
-    void Print(){
+    void Print() const {
      std::cout << (double) numerator / denominator;
     }
 
@@ -37,7 +50,7 @@ public:
     }
 
     SimpleFraction operator*(int const & a) const {
-        return GetSimpleFractMultDiv(a, true);
+        return GetSimpleFractMultDiv(a);
     }
 
     SimpleFraction operator /(SimpleFraction const & a) const {

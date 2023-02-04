@@ -7,7 +7,6 @@
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
-
     Matrix matrix;
     GaussMod(matrix);
     return 0;

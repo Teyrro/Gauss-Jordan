@@ -6,7 +6,7 @@
 #include "../header/Gauss.h"
 
 int Validate(Matrix& a){
-    return !(a.columnSize == a.rowSize+1);
+    return a.columnSize != a.rowSize + 1;
 }
 
 int preparencetoWork(int f, Matrix& matrix, std::pair<int, int>& coordChange,
@@ -72,10 +72,15 @@ std::vector<double> GaussMod(Matrix& matrix){
         SimpleFraction div = matrix(f,f);
 
         CheckForSwapLines(matrix, f, f);
-        std::cout << matrix;
+//        std::cout << matrix;
         if(preparencetoWork(f, matrix, coord, currentColumn)) break;
         futureAnswers[f] = coord;
 
+        for (int index = coord.second + 1; index < matrix.columnSize; ++index) {
+            SimpleFraction currentMainRowElem = matrix(coord.first,index)/div;
+            matrix(coord.first, index, currentMainRowElem);
+        }
+        std::cout << matrix;
 
         for (int i = 0; i < matrix.rowSize; ++i) {
             for (int j = f; j < matrix.columnSize; ++j) {
@@ -88,20 +93,15 @@ std::vector<double> GaussMod(Matrix& matrix){
                     continue;
                 }
                 else {
-                    SimpleFraction c = currentColumn[i] / currentColumn[f];
-                    c = matrix(coord.first, j) * c;
+                    SimpleFraction c = matrix(coord.first, j) * currentColumn[i];
                     SimpleFraction currentElem = matrix(i, j) - (c);
                     matrix(i,j,currentElem);
                 }
 
             }
-        }
-        for (int index = coord.second; index < matrix.columnSize; ++index) {
-            SimpleFraction currentMainRowElem = matrix(coord.first,index)/div;
-            matrix(coord.first, index, currentMainRowElem);
+
         }
         std::cout << matrix;
-
     }
 
     if (CheckLinesOnZero(matrix)) std::cout << "No solutions";
@@ -117,6 +117,3 @@ std::vector<double> GaussMod(Matrix& matrix){
             std::cout << "\n";
         }
 }
-
-
-

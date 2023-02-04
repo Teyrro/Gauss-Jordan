@@ -14,9 +14,7 @@ class Matrix {
 public:
     int rowSize;
     int columnSize;
-    Matrix(int row, int column, std::vector<SimpleFraction>& a) : rowSize(row), columnSize(column), matrix(a) {
-
-    }
+    Matrix(int row, int column, std::vector<SimpleFraction>& a) : rowSize(row), columnSize(column), matrix(a) {}
 
     Matrix();
 
@@ -36,10 +34,6 @@ public:
     }
 
     void SwapLine(int const & index1, int const & index2);
-
-    void PrintM(){
-
-    }
 
 
 

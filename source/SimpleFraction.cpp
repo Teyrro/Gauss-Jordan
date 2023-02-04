@@ -6,7 +6,7 @@
 
 SimpleFraction SimpleFraction::GetSimpleFractSumSubtr(SimpleFraction const & a,bool isSum) const{
     int minus = isSum ? 1 : -1;
-    int commonDenom, commonNum(0);
+    long long commonDenom, commonNum(0);
     if (denominator != a.denominator) {
         commonDenom = denominator * a.denominator;
         commonNum += numerator * a.denominator;
@@ -16,11 +16,31 @@ SimpleFraction SimpleFraction::GetSimpleFractSumSubtr(SimpleFraction const & a,b
         commonDenom = denominator;
         commonNum = numerator + minus * a.numerator;
     }
+
+    if (commonDenom < 0) {
+        commonDenom *= -1;
+        commonNum *= -1;
+    }
+
     return {commonNum, commonDenom};
 }
 
+long long SimpleFraction::GCD(long long a, long long b){
+    if (a != 0)
+        if (a < b) {
+            std::swap(a, b);
+        }
+
+    while (a % b != 0) {
+        a = a % b;
+        std::swap(a, b);
+    }
+    return b;
+}
+
+
 SimpleFraction SimpleFraction::GetSimpleFractMultDiv(SimpleFraction const & a, bool isMult) const{
-    int commonDenom, commonNum;
+    long long commonDenom, commonNum;
     if (isMult){
         commonDenom = denominator * a.denominator;
         commonNum = numerator * a.numerator;
@@ -38,10 +58,16 @@ SimpleFraction SimpleFraction::GetSimpleFractMultDiv(SimpleFraction const & a, b
     return {commonNum, commonDenom};
 }
 
-SimpleFraction SimpleFraction::GetSimpleFractMultDiv(int const & a, bool isMult) const{
-    int commonDenom, commonNum;
+SimpleFraction SimpleFraction::GetSimpleFractMultDiv(int const & a) const{
+    long long commonDenom, commonNum;
     commonNum = numerator * a;
     commonDenom = denominator;
+
+    if (commonDenom < 0) {
+        commonDenom *= -1;
+        commonNum *= -1;
+    }
+
     return {commonNum, commonDenom};
 }
 
