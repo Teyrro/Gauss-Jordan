@@ -73,6 +73,12 @@ build CMakeFiles/untitled1.dir/source/SimpleFraction.cpp.obj: CXX_COMPILER__unti
   OBJECT_DIR = CMakeFiles\untitled1.dir
   OBJECT_FILE_DIR = CMakeFiles\untitled1.dir\source
 
+build CMakeFiles/untitled1.dir/source/FindAllBasicSolutions.cpp.obj: CXX_COMPILER__untitled1_Debug C$:/Users/vorop/CLionProjects/untitled1/source/FindAllBasicSolutions.cpp || cmake_object_order_depends_target_untitled1
+  DEP_FILE = CMakeFiles\untitled1.dir\source\FindAllBasicSolutions.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always -std=gnu++23
+  OBJECT_DIR = CMakeFiles\untitled1.dir
+  OBJECT_FILE_DIR = CMakeFiles\untitled1.dir\source
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target untitled1
@@ -81,7 +87,7 @@ build CMakeFiles/untitled1.dir/source/SimpleFraction.cpp.obj: CXX_COMPILER__unti
 #############################################
 # Link the executable untitled1.exe
 
-build untitled1.exe: CXX_EXECUTABLE_LINKER__untitled1_Debug CMakeFiles/untitled1.dir/source/main.cpp.obj CMakeFiles/untitled1.dir/source/Matrix.cpp.obj CMakeFiles/untitled1.dir/source/Gauss.cpp.obj CMakeFiles/untitled1.dir/source/SimpleFraction.cpp.obj
+build untitled1.exe: CXX_EXECUTABLE_LINKER__untitled1_Debug CMakeFiles/untitled1.dir/source/main.cpp.obj CMakeFiles/untitled1.dir/source/Matrix.cpp.obj CMakeFiles/untitled1.dir/source/Gauss.cpp.obj CMakeFiles/untitled1.dir/source/SimpleFraction.cpp.obj CMakeFiles/untitled1.dir/source/FindAllBasicSolutions.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\untitled1.dir

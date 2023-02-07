@@ -26,6 +26,7 @@ SimpleFraction SimpleFraction::GetSimpleFractSumSubtr(SimpleFraction const & a,b
 }
 
 long long SimpleFraction::GCD(long long a, long long b){
+    if (a == 1 and a == -b) return -b;
     if (a != 0)
         if (a < b) {
             std::swap(a, b);
@@ -72,6 +73,9 @@ SimpleFraction SimpleFraction::GetSimpleFractMultDiv(int const & a) const{
 }
 
 std::ostream& operator<<(std::ostream& out,  SimpleFraction const& fract){
-    out << fract.numerator << "/" << fract.denominator;
+    if (fract.denominator != 1)
+        out << fract.numerator << "/" << fract.denominator;
+    else
+        out << fract.numerator;
     return out;
 }

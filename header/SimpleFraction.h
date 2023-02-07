@@ -16,9 +16,15 @@ private:
     [[nodiscard]] SimpleFraction GetSimpleFractMultDiv(int const & a) const;
     long long GCD(long long a, long long b);
 public:
-    long long numerator, denominator;
+    long long numerator;
+    long long denominator;
     SimpleFraction() : numerator(0), denominator(1){}
     SimpleFraction(long long num, long long denom) : numerator(num), denominator(denom) {
+//        if (denom == 0 and num == 0) {
+//            denominator = 1;
+//        }
+        if (denom == 0) throw "denominator can't be able zero";
+
         long long div(1);
         do {
             div = GCD(numerator, denominator);
@@ -30,8 +36,6 @@ public:
             denominator *= -1;
             numerator *= -1;
         }
-
-        if (denom < 1) throw ;
     }
     void Print() const {
      std::cout << (double) numerator / denominator;
@@ -63,6 +67,12 @@ public:
 
     bool operator==(SimpleFraction const & a) const {
         return a.numerator == numerator and a.denominator == denominator;
+    }
+
+    bool operator<(SimpleFraction const & a) const {
+        long long commonNum1 = + a.denominator * numerator;
+        long long commonNum2 = a.numerator * denominator;
+        return abs(commonNum1) < abs(commonNum2);
     }
 };
 

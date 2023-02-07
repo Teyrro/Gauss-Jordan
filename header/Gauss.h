@@ -8,6 +8,6 @@
 #include <vector>
 #include "Matrix.h"
 
-std::vector<double> GaussMod(Matrix& matrix);
-int Validate(Matrix& a);
+void GaussMod(Matrix& matrix);
+
 #endif //UNTITLED1_GAUSS_H

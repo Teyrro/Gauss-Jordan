@@ -12,32 +12,37 @@
 class Matrix {
     std::vector<SimpleFraction> matrix;
 public:
-    int rowSize;
-    int columnSize;
-    Matrix(int row, int column, std::vector<SimpleFraction>& a) : rowSize(row), columnSize(column), matrix(a) {}
+    int rowCount;
+    int columnCount;
+    Matrix(int row, int column) : rowCount(row), columnCount(column) {
+        matrix.resize(row * column);
+    }
 
     Matrix();
 
     SimpleFraction operator()(int row, int column){
-        if (row > rowSize or column > columnSize) throw std::invalid_argument("Overwrite");
-        return matrix[row * columnSize + column];
+        if (row >= rowCount or column >= columnCount or row < 0 or column < 0) throw std::invalid_argument("Overwrite");
+        return matrix[row * columnCount + column];
     }
 
     SimpleFraction operator()(int row, int column) const{
-        if (row > rowSize or column > columnSize) throw std::invalid_argument("Overwrite");
-        return matrix[row * columnSize + column];
+        if (row >= rowCount or column >= columnCount or row < 0 or column < 0) throw std::invalid_argument("Overwrite");
+        return matrix[row * columnCount + column];
     }
 
     void operator()(int row, int column, SimpleFraction inputAnswer){
-        if (row > rowSize or column > columnSize) throw std::invalid_argument("Overwrite");
-        matrix[row * columnSize + column] = inputAnswer;
+        if (row >= rowCount or column >= columnCount or row < 0 or column < 0) throw std::invalid_argument("Overwrite");
+        matrix[row * columnCount + column] = inputAnswer;
     }
+
 
     void SwapLine(int const & index1, int const & index2);
 
-
+    void resize(int size);
 
 };
+
+void CheckMatrixOnZeroLine(Matrix& matrix);
 
 std::ostream& operator<<(std::ostream& out, Matrix const& matrix);
 
