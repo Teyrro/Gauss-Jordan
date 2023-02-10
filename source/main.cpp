@@ -10,7 +10,7 @@ int main() {
     Matrix matrix;
     try {
         GaussMod(matrix);
-//        FindBasicSolutions(matrix);
+        FindBasicSolutions(matrix);
     }
     catch(std::invalid_argument a) {
         std::cout << a.what();

@@ -19,7 +19,7 @@ Matrix::Matrix() {
 
 void Matrix::SwapLine(int const & index1, int const & index2) {
     if (index1 == index2) return;
-    if (index2 <= 0 or index2 >= rowCount or index1 <= 0 or index1 >= rowCount) return;
+    if (index2 < 0 or index2 >= rowCount or index1 < 0 or index1 >= rowCount) return;
 
     int line1 = index1 * columnCount;
     int line2 = index2 * columnCount;

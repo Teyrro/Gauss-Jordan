@@ -8,6 +8,7 @@
 #include <vector>
 #include "Matrix.h"
 
+void GaussMod(Matrix matrix, std::vector<std::pair<int, int>> sample);
 void GaussMod(Matrix& matrix);
 
 #endif //UNTITLED1_GAUSS_H
