@@ -36,6 +36,7 @@ long long SimpleFraction::GCD(long long a, long long b){
         a = a % b;
         std::swap(a, b);
     }
+
     return b;
 }
 

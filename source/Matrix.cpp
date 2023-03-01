@@ -51,13 +51,13 @@ void CheckMatrixOnZeroLine(Matrix& matrix){
 
 
 std::ostream& operator<<(std::ostream& out, Matrix const& matrix){
-    std::cout << "Matrix: \n";
+    out << "Matrix: \n";
     for (int i = 0; i < matrix.rowCount; ++i) {
         for (int j = 0; j < matrix.columnCount; ++j) {
-            std::cout << matrix(i, j) << " ";
+            out << matrix(i, j) << "\t";
         }
-        std::cout << "\n";
+        out << "\n";
     }
-    std::cout << "\n";
+    out << "\n";
     return out;
 }

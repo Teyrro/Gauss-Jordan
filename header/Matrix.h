@@ -18,6 +18,9 @@ public:
         matrix.resize(row * column);
     }
 
+    Matrix(int row, int column, std::vector<SimpleFraction> a) : rowCount(row), columnCount(column), matrix(a) {
+    }
+
     Matrix();
 
     SimpleFraction operator()(int row, int column){

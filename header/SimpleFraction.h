@@ -74,6 +74,18 @@ public:
         long long commonNum2 = a.numerator * denominator;
         return abs(commonNum1) < abs(commonNum2);
     }
+
+    bool operator >(SimpleFraction const & a) const {
+        long long commonNum1 = + a.denominator * numerator;
+        long long commonNum2 = a.numerator * denominator;
+        return commonNum1 > commonNum2;
+    }
+
+    bool operator >=(SimpleFraction const & a) const {
+        long long commonNum1 = + a.denominator * numerator;
+        long long commonNum2 = a.numerator * denominator;
+        return commonNum1 >= commonNum2;
+    }
 };
 
 std::ostream& operator<<(std::ostream& out,  SimpleFraction const& fract);

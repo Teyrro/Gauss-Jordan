@@ -93,47 +93,53 @@ bool NextSet(std::vector<std::pair<int, int>>& a, int variables, int cells){
     void CreateCoordsBS(Matrix& matrix, std::vector<std::vector<std::pair<int, int>>>& coords){
     int variables = (matrix.columnCount - 2);
     int cells = matrix.rowCount;
-    std::vector<std::pair<int, int>> sample(cells + 1);
+    std::vector<std::pair<int, int>> sample(cells);
 
 
     for (int i = 0; i < cells; ++i) {
         sample[i].second = i;
     }
 
-    sample[cells].second = matrix.columnCount - 1;
+
     coords.push_back(sample);
-    if (variables >= cells){
+    if (variables > cells){
         while (NextSet(sample, variables, cells)){
-            sample[cells].second = matrix.columnCount - 1;
+
             coords.push_back(sample);
             }
     }
 
 }
 
+bool ColumnAnswerIsPositive(Matrix const & matrix){
+    for (int i = 0; i < matrix.rowCount; ++i) {
+        if (SimpleFraction(0, 1) > matrix(i, matrix.columnCount - 1))
+            return false;
+    }
+    return true;
+}
 
-void FindBasicSolutions(Matrix& matrix){
-    std::vector<std::vector<std::pair<int, int>>> coordBS;
-    int countBS(factorial(matrix.columnCount - 1) /
-                (factorial((matrix.columnCount - 1) - matrix.rowCount) * factorial(matrix.rowCount)));
+
+std::vector<std::pair<int, int>> FindBasicSolutions(Matrix& outDataMatrix, bool isFindPositiveSolution){
+    Matrix matrix = outDataMatrix;
+    std::vector<std::vector<std::pair<int, int>>> coordBS /*= {{{0, 2}, {0, 3}, {0, 4}}}*/;
     CreateCoordsBS(matrix, coordBS);
-    for (auto& ptr : coordBS) {
-        int areColumnLinearlyDependent = CheckOnHaveLineDependence(matrix, ptr);
+
+    for (int i(coordBS.size() - 1); i >= 0 ; i--) {
         std::cout << "\n";
-        for (auto &item: ptr)
+        for (auto &item: coordBS[i])
             std::cout  << item.first << ":" << item.second << " ";
         std::cout << "\n";
-        for (int i(0); i < ptr.size() - 1; i++)
-            std::cout << "x_" << ptr[i].second + 1 << " ";
-        std::cout << ": ";
+        for (int i(0); i < coordBS[i].size(); i++)
+            std::cout << "x_" << coordBS[i][i].second + 1 << " ";
+        std::cout << ": \n";
+        matrix = GaussMod(matrix, coordBS[i]);
 
-        if (!areColumnLinearlyDependent) {
-            GaussMod(matrix, ptr);
-        }
-        else if (areColumnLinearlyDependent == -1) std::cout << "Columns are linearly dependent\n";
-
+        if (isFindPositiveSolution)
+            if (ColumnAnswerIsPositive(matrix)) {
+                outDataMatrix = matrix;
+                return coordBS[i];
+            }
     }
-
-
-//    Matrix basicSolutions = Matrix(countBS, matrix.columnCount);
+    return {};
 }

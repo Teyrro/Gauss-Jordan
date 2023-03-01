@@ -7,6 +7,6 @@
 
 #include "Matrix.h"
 
-void FindBasicSolutions(Matrix& matrix);
+std::vector<std::pair<int, int>> FindBasicSolutions(Matrix& outDataMatrix, bool isFindPositiveSolution = false);
 
 #endif //UNTITLED1_FINDALLBASICSOLUTIONS_H

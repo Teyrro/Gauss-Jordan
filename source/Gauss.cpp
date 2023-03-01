@@ -4,12 +4,8 @@
 
 #include <map>
 #include "../header/Gauss.h"
+#include "../header/StuffForGauss.h"
 
-void CopyCurrentColumn(Matrix const& matrix, int column,  std::map<int, SimpleFraction>& columnChange){
-    for (int index = 0; index < matrix.rowCount; ++index) {
-        columnChange[index] = matrix(index, column);
-    }
-}
 
 short CheckLineOnZero(Matrix const & matrix, int row){
     int countZero(0);
@@ -23,33 +19,16 @@ short CheckLineOnZero(Matrix const & matrix, int row){
     return 0;
 }
 
-//short CheckOnZeroForSwapLines(Matrix & matrix, int startRow, int column){
-//    if (CheckLineOnZero(matrix, startRow) == 1) return 1;
-//    SimpleFraction Zero = SimpleFraction(0, 1);
-//    int indexVal(-1);
-//    for (int j = column; j < matrix.columnCount - 1; ++j)
-//        for (int i = startRow; i < matrix.rowCount; ++i) {
-//            if (Zero != matrix(i, j)) {
-//                Zero = matrix(i, j);
-//                indexVal = i;
-//                break;
-//            }
-//            else continue;
-//        }
-//
-//    matrix.SwapLine(startRow, indexVal);
-//    return 0;
-//}
 
-std::pair<int, int> CheckForSwapLinesByMainColumn(Matrix& matrix, int startRow, int column){
+std::pair<int, int> CheckForSwapLinesByMainColumn(Matrix& matrix, int startRow, int startColumn){
     int indexMaxVal(startRow);
     SimpleFraction zero = SimpleFraction(0, 1);
     int mainRow(-1), mainColumn(-1);
-    for (int j = column; j < matrix.columnCount - 1; ++j) {
-        for (int i = startRow; i < matrix.rowCount; ++i) {
-            if (zero != matrix(i, j)) {
-                mainRow = i;
-                mainColumn = j;
+    for (int column = startColumn; column < matrix.columnCount - 1; ++column) {
+        for (int row = startRow; row < matrix.rowCount; ++row) {
+            if (zero != matrix(row, column)) {
+                mainRow = row;
+                mainColumn = column;
                 break;
             }
         }
@@ -71,13 +50,6 @@ std::pair<int, int> CheckForSwapLinesByMainColumn(Matrix& matrix, int startRow, 
     return std::make_pair(startRow, mainColumn);
 }
 
-//int CheckLinesOnZero(Matrix& matrix){
-//    for (int i = 0; i < matrix.rowCount; ++i) {
-//        if (CheckLineOnZero(matrix, i) == 1) return 1;
-//    }
-//    return 0;
-//}
-
 void PrintAnswer(Matrix const& matrix,  std::map<int, std::pair<int ,int>> & futureAnswers, short isNoSolution){
     if (isNoSolution == 1)
         throw std::invalid_argument("No Solutions");
@@ -96,22 +68,23 @@ void PrintAnswer(Matrix const& matrix,  std::map<int, std::pair<int ,int>> & fut
 
 }
 
-void Transformation(Matrix& matrix, int f, std::pair<int, int>const& coord, std::map<int, SimpleFraction> currentColumn,
+void Transformation(Matrix& matrix, int row, std::pair<int, int>const& coord, std::map<int, SimpleFraction> currentColumn,
                     short isNoSolution){
-    for (int i = 0; i < matrix.rowCount; ++i) {
-        for (int j = f; j < matrix.columnCount; ++j) {
-            if (coord.second == j){
-                if (i == coord.first) matrix(i, j, SimpleFraction(1,1));
-                else matrix(i, j, SimpleFraction(0,1));
+
+    for (int currentRow = 0; currentRow < matrix.rowCount; ++currentRow) {
+        for (int column = row; column < matrix.columnCount; ++column) {
+            if (coord.second == column){
+                if (currentRow == coord.first) matrix(currentRow, column, SimpleFraction(1, 1));
+                else matrix(currentRow, column, SimpleFraction(0, 1));
                 continue;
             }
-            if (coord.first == i) {
+            if (coord.first == currentRow) {
                 continue;
             }
             else {
-                SimpleFraction c = matrix(coord.first, j) * currentColumn[i] / currentColumn[f];
-                SimpleFraction currentElem = matrix(i, j) - (c);
-                matrix(i,j,currentElem);
+                SimpleFraction c = matrix(coord.first, column) * currentColumn[currentRow] / currentColumn[row];
+                SimpleFraction currentElem = matrix(currentRow, column) - (c);
+                matrix(currentRow, column, currentElem);
             }
 
         }
@@ -119,36 +92,38 @@ void Transformation(Matrix& matrix, int f, std::pair<int, int>const& coord, std:
     }
     if (isNoSolution != 2) {
         for (int index = coord.second + 1; index < matrix.columnCount; ++index) {
-            SimpleFraction currentMainRowElem = matrix(coord.first, index) / currentColumn[f];
+            SimpleFraction currentMainRowElem = matrix(coord.first, index) / currentColumn[row];
             matrix(coord.first, index, currentMainRowElem);
         }
         std::cout << matrix;
     }
 }
 
+
 void GaussMod(Matrix& matrix){
     if (matrix.columnCount - 1 < matrix.rowCount) throw std::overflow_error("amount variables < column answer");
     std::cout << matrix;
     std::map<int, std::pair<int ,int>> futureAnswers;
     short isNoSolution = false;
+
     for (int f = 0; f < matrix.rowCount; ++f) {
-//        CheckOnZeroForSwapLines(matrix, f, f);
-        std::pair<int, int> coord(0,0);
+        std::pair<int, int> mainElementCoord(0, 0);
+
         isNoSolution = CheckLineOnZero(matrix, f);
         if(isNoSolution == 1) break;
 
-        coord = CheckForSwapLinesByMainColumn(matrix, f, f);
-        if (coord == std::make_pair(-1, -1)) break;
-//        findCoordMainElement(matrix, f,coord);
+        mainElementCoord = CheckForSwapLinesByMainColumn(matrix, f, f);
+        if (mainElementCoord == std::make_pair(-1, -1)) break;
+//        findCoordMainElement(matrix, f,mainElementCoord);
 
-        futureAnswers[f] = coord;
+        futureAnswers[f] = mainElementCoord;
         std::map<int, SimpleFraction> currentColumn;
-        CopyCurrentColumn(matrix, coord.second, currentColumn);
+        CopyCurrentColumn(matrix, mainElementCoord.second, currentColumn);
+        Transformation(matrix, f, mainElementCoord, currentColumn, isNoSolution) ;
         std::cout << matrix;
-        Transformation(matrix, f, coord, currentColumn, isNoSolution) ;
     }
     CheckMatrixOnZeroLine(matrix);
-    std::cout << matrix;
+//    std::cout << matrix;
     PrintAnswer(matrix, futureAnswers, isNoSolution);
 }
 
@@ -156,11 +131,11 @@ void GaussMod(Matrix& matrix){
 void PrintAnswer(std::map<int, SimpleFraction> & futureAnswers,
                  short isNoSolution, std::vector<std::pair<int, int>>& sample){
     if (isNoSolution == 1)
-        throw std::invalid_argument("No Solutions");
+         std::cout << "No Solutions";
     else {
         std::cout << "(";
         for (int i = 0; i < futureAnswers.size(); ++i) {
-            std::cout << futureAnswers[i] << ";";
+            std::cout << futureAnswers[i] << "; ";
         }
         std::cout << ")\n";
     }
@@ -169,60 +144,73 @@ void PrintAnswer(std::map<int, SimpleFraction> & futureAnswers,
 
 }
 
-void Transformation(Matrix& matrix, int f, std::pair<int, int>const& coord, std::map<int, SimpleFraction> currentColumn,
-                    short isNoSolution, std::vector<std::pair<int, int>> sample){
-    for (int i = 0; i < matrix.rowCount; ++i) {
-        for (auto& item: sample) {
-            if (coord.second == item.second){
-                if (i == coord.first) matrix(i, item.second, SimpleFraction(1,1));
-                else matrix(i, item.second, SimpleFraction(0,1));
-                continue;
-            }
-            if (coord.first == i) {
-                continue;
-            }
-            else {
-                // f поменять на sample[f].first
-                SimpleFraction c = matrix(coord.first, item.second) * currentColumn[i] / currentColumn[f];
-                SimpleFraction currentElem = matrix(i, item.second) - (c);
-                matrix(i,item.second,currentElem);
-            }
 
-        }
 
-    }
-    if (isNoSolution != 2) {
-        for (int index = coord.second + 1; index < matrix.columnCount; ++index) {
-            // f поменять на sample[f].first
-            SimpleFraction currentMainRowElem = matrix(coord.first, index) / currentColumn[f];
-            matrix(coord.first, index, currentMainRowElem);
+std::pair<int, int> CheckForSwapLinesByMainColumn(Matrix& matrix, std::vector<std::pair<int, int>> sample
+                                                  , int startRow, int startColumn){
+    int indexMaxVal(startRow);
+    SimpleFraction zero = SimpleFraction(0, 1);
+    int mainRow(-1), mainColumn(-1);
+    for (int column = startColumn; column < sample.size(); ++column) {
+        for (int row = startRow; row < matrix.rowCount; ++row) {
+            if (zero != matrix(row, sample[column].second)) {
+                mainRow = row;
+                mainColumn = column;
+                break;
+            }
         }
-//        std::cout << matrix;
+        if (mainRow != -1) break;
     }
+    if (mainRow == -1 and mainColumn == -1) return std::make_pair(-1, -1);
+    indexMaxVal = mainRow;
+    SimpleFraction maxVal = matrix(mainRow, mainColumn);
+
+    for (int i = startRow; i < matrix.rowCount; ++i) {
+
+        if (maxVal < matrix(i, sample[mainColumn].second)) {
+            maxVal = matrix(i, sample[mainColumn].second);
+            indexMaxVal = i;
+        }
+    }
+
+    matrix.SwapLine(startRow, indexMaxVal);
+    return std::make_pair(startRow, sample[mainColumn].second);
 }
 
-void GaussMod(Matrix matrix, std::vector<std::pair<int, int>> sample){
+short CheckLineOnZero(Matrix const & matrix, int row, std::vector<std::pair<int, int>> sample){
+    int countZero(0);
+    SimpleFraction zero = SimpleFraction(0, 1);
+    for (int j = sample[0].second; j < sample.size(); ++j) {
+        if (matrix(row, sample[j].second) == zero) ++countZero;
+    }
+    if (matrix(row, matrix.columnCount - 1) != zero and countZero == sample.size()) return 1;
+    else if (countZero == sample.size()) return 2;
+
+    return 0;
+}
+
+Matrix GaussMod(Matrix matrix, std::vector<std::pair<int, int>> sample){
     if (matrix.columnCount - 1 < matrix.rowCount) throw std::overflow_error("amount variables < column answer");
-//    std::cout << matrix;
+    std::cout << matrix;
     std::map<int, SimpleFraction> futureAnswers;
     short isNoSolution = false;
     for (int f = 0; f < matrix.rowCount; ++f) {
 //        CheckOnZeroForSwapLines(matrix, f, f);
         std::pair<int, int> coord(0,0);
-        isNoSolution = CheckLineOnZero(matrix, sample[f].first);
+        isNoSolution = CheckLineOnZero(matrix, f, sample);
         if(isNoSolution == 1) break;
         // f поменять на sample[f].first
-        coord = CheckForSwapLinesByMainColumn(matrix, f, sample[f].second);
+        coord = CheckForSwapLinesByMainColumn(matrix, sample, f, f);
         if (coord == std::make_pair(-1, -1)) break;
-//        findCoordMainElement(matrix, f,coord);
-//        std::cout << matrix;
+        sample[f].first = coord.first;
+        std::cout << matrix;
 
         futureAnswers[sample[f].second] = SimpleFraction(0, 1);
         std::map<int, SimpleFraction> currentColumn;
         CopyCurrentColumn(matrix, coord.second, currentColumn);
 
         Transformation(matrix, f, coord, currentColumn, isNoSolution, sample) ;
-
+//        std::cout << matrix;
     }
 
     {
@@ -238,6 +226,7 @@ void GaussMod(Matrix matrix, std::vector<std::pair<int, int>> sample){
     }
 
     CheckMatrixOnZeroLine(matrix);
-//    std::cout << matrix;
+    std::cout << "\n" << matrix;
     PrintAnswer(futureAnswers, isNoSolution, sample);
+    return matrix;
 }
