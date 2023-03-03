@@ -2,10 +2,10 @@
 // Created by vorop on 02.02.2023.
 //
 
-#include "../header/Matrix.h"
+#include "Matrix.h"
 
-Matrix::Matrix() {
-    std::ifstream file("../Data.txt");
+Matrix::Matrix(std::string filename) {
+    std::ifstream file(filename);
     file >> rowCount;
     file >> columnCount;
     std::vector<SimpleFraction> a(rowCount * columnCount);

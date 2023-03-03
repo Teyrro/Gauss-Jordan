@@ -6,9 +6,9 @@
 #define UNTITLED1_SIMPLEXTABLE_H
 
 
-#include "Matrix.h"
-#include "Gauss.h"
-#include "FindAllBasicSolutions.h"
+#include "../Gauss/Matrix/Matrix.h"
+#include "../Gauss/Gauss.h"
+#include "../AllBasicSolutions/FindAllBasicSolutions.h"
 #include <string>
 #include <sstream>
 #include <map>
@@ -19,9 +19,9 @@ class SimplexTable {
         COLUMN_SIZE,
         EXTRA_VAR_SIZE
     };
-    std::vector<int> CalculateRowsAndColumns();
+    std::vector<int> CalculateRowsAndColumns(std::string fileName);
     void FillRowZ(std::string& strBuffer, std::ifstream& file, std::vector<SimpleFraction>& row);
-    void FillMatrixData(std::vector<int> matrixInfo, std::vector<SimpleFraction>& outDataVector);
+    void FillMatrixData(std::vector<int> matrixInfo, std::vector<SimpleFraction>& outDataVector, std::string fileName);
     void UpdateTargetFunction();
     friend void GaussMod(Matrix& matrix);
     friend std::vector<std::pair<int, int>> FindBasicSolutions(Matrix& outDataMatrix, bool is);
@@ -35,7 +35,7 @@ public:
     std::vector<std::pair<int, int>> basicVariables;
     std::vector<std::pair<SimpleFraction, SimpleFraction>> startBasic;
 
-    SimplexTable();
+    SimplexTable(std::string fileName);
     SimpleFraction operator()(int row, int column) {
         if (column == 0) column = matrix.columnCount - 1;
         else

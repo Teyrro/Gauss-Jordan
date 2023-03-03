@@ -3,8 +3,8 @@
 //
 
 #include <map>
-#include "../header/Gauss.h"
-#include "../header/StuffForGauss.h"
+#include "Gauss.h"
+#include "StuffForGauss.h"
 
 
 short CheckLineOnZero(Matrix const & matrix, int row){

@@ -1,7 +1,7 @@
 
 #include <list>
-#include "../header/SimplexMethod.h"
-#include "../header/StuffForGauss.h"
+#include "SimplexMethod.h"
+#include "../Gauss/StuffForGauss.h"
 
  short FindMinElement(SimplexTable const& table, std::pair<int, int>& coord){
     std::vector<bool> basicVar(table.rowZ.size() - 1);

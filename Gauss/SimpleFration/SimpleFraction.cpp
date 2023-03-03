@@ -2,7 +2,7 @@
 // Created by vorop on 03.02.2023.
 //
 
-#include "../header/SimpleFraction.h"
+#include "SimpleFraction.h"
 
 SimpleFraction SimpleFraction::GetSimpleFractSumSubtr(SimpleFraction const & a,bool isSum) const{
     int minus = isSum ? 1 : -1;

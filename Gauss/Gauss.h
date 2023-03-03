@@ -6,7 +6,7 @@
 #define UNTITLED1_GAUSS_H
 
 #include <vector>
-#include "Matrix.h"
+#include "Matrix/Matrix.h"
 Matrix GaussMod(Matrix matrix, std::vector<std::pair<int, int>> sample);
 void GaussMod(Matrix& matrix);
 

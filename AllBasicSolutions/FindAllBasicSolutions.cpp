@@ -4,9 +4,9 @@
 
 #include <list>
 #include <map>
-#include "../header/Matrix.h"
-#include "../header/FindAllBasicSolutions.h"
-#include "../header/Gauss.h"
+#include "../Gauss/Matrix/Matrix.h"
+#include "FindAllBasicSolutions.h"
+#include "../Gauss/Gauss.h"
 
 long long factorial(int x){
     long long answer(1);
@@ -91,7 +91,7 @@ bool NextSet(std::vector<std::pair<int, int>>& a, int variables, int cells){
 }
 
     void CreateCoordsBS(Matrix& matrix, std::vector<std::vector<std::pair<int, int>>>& coords){
-    int variables = (matrix.columnCount - 2);
+    int variables = (matrix.columnCount - 1);
     int cells = matrix.rowCount;
     std::vector<std::pair<int, int>> sample(cells);
 
@@ -104,7 +104,6 @@ bool NextSet(std::vector<std::pair<int, int>>& a, int variables, int cells){
     coords.push_back(sample);
     if (variables > cells){
         while (NextSet(sample, variables, cells)){
-
             coords.push_back(sample);
             }
     }
@@ -130,8 +129,8 @@ std::vector<std::pair<int, int>> FindBasicSolutions(Matrix& outDataMatrix, bool 
         for (auto &item: coordBS[i])
             std::cout  << item.first << ":" << item.second << " ";
         std::cout << "\n";
-        for (int i(0); i < coordBS[i].size(); i++)
-            std::cout << "x_" << coordBS[i][i].second + 1 << " ";
+        for (int j(0); j < coordBS[i].size(); j++)
+            std::cout << "x_" << coordBS[i][j].second + 1 << " ";
         std::cout << ": \n";
         matrix = GaussMod(matrix, coordBS[i]);
 

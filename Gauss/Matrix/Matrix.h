@@ -7,7 +7,7 @@
 #include "vector"
 #include "stdexcept"
 #include "fstream"
-#include "SimpleFraction.h"
+#include "../SimpleFration/SimpleFraction.h"
 
 class Matrix {
     std::vector<SimpleFraction> matrix;
@@ -21,7 +21,7 @@ public:
     Matrix(int row, int column, std::vector<SimpleFraction> a) : rowCount(row), columnCount(column), matrix(a) {
     }
 
-    Matrix();
+    Matrix(std::string filename);
 
     SimpleFraction operator()(int row, int column){
         if (row >= rowCount or column >= columnCount or row < 0 or column < 0) throw std::invalid_argument("Overwrite");

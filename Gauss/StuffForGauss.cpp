@@ -2,8 +2,8 @@
 // Created by vorop on 26.02.2023.
 //
 
-#include "../header/StuffForGauss.h"
-#include "../header/SimplexTable.h"
+#include "StuffForGauss.h"
+#include "../SimplexMethod/SimplexTable.h"
 
 void CopyCurrentColumn(Matrix const& matrix, int column,  std::map<int, SimpleFraction>& columnChange){
     for (int index = 0; index < matrix.rowCount; ++index) {

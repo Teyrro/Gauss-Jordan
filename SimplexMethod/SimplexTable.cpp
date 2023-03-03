@@ -2,11 +2,11 @@
 // Created by vorop on 24.02.2023.
 //
 
-#include "../header/SimplexTable.h"
-#include "../header/SimplexMethod.h"
+#include "SimplexTable.h"
+#include "SimplexMethod.h"
 
-SimplexTable::SimplexTable() : matrix(0,0){
-    std::vector<int> matrixInfo = CalculateRowsAndColumns();
+SimplexTable::SimplexTable(std::string fileName) : matrix(0,0){
+    std::vector<int> matrixInfo = CalculateRowsAndColumns(fileName);
     matrix.rowCount = matrixInfo[ROW_SIZE];
     matrix.columnCount = matrixInfo[COLUMN_SIZE];
     rowZ.resize(matrixInfo[COLUMN_SIZE]);
@@ -14,7 +14,7 @@ SimplexTable::SimplexTable() : matrix(0,0){
     startBasic.resize((matrixInfo[COLUMN_SIZE] - matrixInfo[EXTRA_VAR_SIZE]) - 1);
 
     std::vector<SimpleFraction> a(matrix.rowCount * matrix.columnCount);
-    FillMatrixData(matrixInfo, a);
+    FillMatrixData(matrixInfo, a, fileName);
     Matrix m(matrix.rowCount, matrix.columnCount, std::move(a));
     matrix = m;
     if (matrixInfo[EXTRA_VAR_SIZE] < matrixInfo[ROW_SIZE])
@@ -47,10 +47,10 @@ void SimplexTable::UpdateTargetFunction(){
     }
 }
 
-std::vector<int> SimplexTable::CalculateRowsAndColumns(){
+std::vector<int> SimplexTable::CalculateRowsAndColumns(std::string fileName){
     std::vector<std::string> inequalSymb {{"<="}, {">="}};
     std::vector<std::string> targetFunctionSymb{{"max"}, { "min"}};
-    std::ifstream file("../Data.txt");
+    std::ifstream file(fileName);
     std::string strBuffer;
     std::vector<int> matrixInfo(3);
     int countRow(0), countInequalSymbols(0);
@@ -109,8 +109,9 @@ void SimplexTable::FillRowZ(std::string& strBuffer, std::ifstream& file, std::ve
 
 }
 
-void SimplexTable::FillMatrixData(std::vector<int> matrixInfo, std::vector<SimpleFraction>& outDataVector){
-    std::ifstream file("../Data.txt");
+void SimplexTable::FillMatrixData(std::vector<int> matrixInfo, std::vector<SimpleFraction>& outDataVector,
+                                  std::string fileName){
+    std::ifstream file(fileName);
     int i(0);
     std::string strBuffer;
     int mainElement(0);

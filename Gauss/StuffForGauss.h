@@ -6,8 +6,8 @@
 #define UNTITLED1_STUFFFORGAUSS_H
 
 #include <map>
-#include "Matrix.h"
-#include "SimplexTable.h"
+#include "Matrix/Matrix.h"
+#include "../SimplexMethod/SimplexTable.h"
 
 void CopyCurrentColumn(Matrix const& matrix, int column, std::map<int, SimpleFraction>& columnChange);
 void CopyCurrentColumn(SimplexTable const& table, int column, std::map<int, SimpleFraction>& columnChange);
