@@ -2,6 +2,7 @@
 // Created by vorop on 03.02.2023.
 //
 
+#include <iomanip>
 #include "SimpleFraction.h"
 
 SimpleFraction SimpleFraction::GetSimpleFractSumSubtr(SimpleFraction const & a,bool isSum) const{
@@ -74,9 +75,15 @@ SimpleFraction SimpleFraction::GetSimpleFractMultDiv(int const & a) const{
 }
 
 std::ostream& operator<<(std::ostream& out,  SimpleFraction const& fract){
-    if (fract.denominator != 1)
-        out << fract.numerator << "/" << fract.denominator;
-    else
+    std::string outData;
+    std::stringstream transform;
+    if (fract.denominator != 1) {
+        transform << fract.numerator << "/" << fract.denominator;
+        transform >> outData;
+        out << outData;
+    }
+    else {
         out << fract.numerator;
+    }
     return out;
 }

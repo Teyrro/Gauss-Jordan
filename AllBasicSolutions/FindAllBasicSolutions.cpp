@@ -120,6 +120,7 @@ bool ColumnAnswerIsPositive(Matrix const & matrix){
 
 
 std::vector<std::pair<int, int>> FindBasicSolutions(Matrix& outDataMatrix, bool isFindPositiveSolution){
+    GaussMod(outDataMatrix);
     Matrix matrix = outDataMatrix;
     std::vector<std::vector<std::pair<int, int>>> coordBS /*= {{{0, 2}, {0, 3}, {0, 4}}}*/;
     CreateCoordsBS(matrix, coordBS);

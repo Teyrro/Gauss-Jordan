@@ -95,7 +95,6 @@ void Transformation(Matrix& matrix, int row, std::pair<int, int>const& coord, st
             SimpleFraction currentMainRowElem = matrix(coord.first, index) / currentColumn[row];
             matrix(coord.first, index, currentMainRowElem);
         }
-        std::cout << matrix;
     }
 }
 
@@ -123,7 +122,7 @@ void GaussMod(Matrix& matrix){
         std::cout << matrix;
     }
     CheckMatrixOnZeroLine(matrix);
-//    std::cout << matrix;
+    std::cout << matrix;
     PrintAnswer(matrix, futureAnswers, isNoSolution);
 }
 
@@ -203,14 +202,14 @@ Matrix GaussMod(Matrix matrix, std::vector<std::pair<int, int>> sample){
         coord = CheckForSwapLinesByMainColumn(matrix, sample, f, f);
         if (coord == std::make_pair(-1, -1)) break;
         sample[f].first = coord.first;
-        std::cout << matrix;
+//        std::cout << matrix;
 
         futureAnswers[sample[f].second] = SimpleFraction(0, 1);
         std::map<int, SimpleFraction> currentColumn;
         CopyCurrentColumn(matrix, coord.second, currentColumn);
 
         Transformation(matrix, f, coord, currentColumn, isNoSolution, sample) ;
-//        std::cout << matrix;
+        std::cout << matrix;
     }
 
     {
@@ -226,7 +225,7 @@ Matrix GaussMod(Matrix matrix, std::vector<std::pair<int, int>> sample){
     }
 
     CheckMatrixOnZeroLine(matrix);
-    std::cout << "\n" << matrix;
+//    std::cout << "\n" << matrix;
     PrintAnswer(futureAnswers, isNoSolution, sample);
     return matrix;
 }

@@ -2,6 +2,7 @@
 // Created by vorop on 02.02.2023.
 //
 
+#include <iomanip>
 #include "Matrix.h"
 
 Matrix::Matrix(std::string filename) {
@@ -54,7 +55,8 @@ std::ostream& operator<<(std::ostream& out, Matrix const& matrix){
     out << "Matrix: \n";
     for (int i = 0; i < matrix.rowCount; ++i) {
         for (int j = 0; j < matrix.columnCount; ++j) {
-            out << matrix(i, j) << "\t";
+            out << std::setiosflags(std::ios::left);
+            out << std::setw(15) << matrix(i, j);
         }
         out << "\n";
     }
