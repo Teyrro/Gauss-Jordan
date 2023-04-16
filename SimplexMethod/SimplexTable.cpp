@@ -21,6 +21,7 @@ SimplexTable::SimplexTable(std::string fileName) : matrix(0,0){
         GaussMod(matrix);
     basicVariables = FindBasicSolutions(matrix, true);
 
+
     UpdateTargetFunction();
 }
 
@@ -62,20 +63,29 @@ std::vector<int> SimplexTable::CalculateRowsAndColumns(std::string fileName){
                 isTargetFunc = true;
         }
     } while (!strBuffer.empty());
+
     if (!isTargetFunc)
         std::invalid_argument("Fill target function like that \"1 2 3 4 max\" or \"1 2 3 4 min\"");
+
+    int countColumn(0);
     while(!file.eof()){
         getline(file, strBuffer);
-        if (strBuffer.empty())
+        int tmp = std::count(strBuffer.cbegin(), strBuffer.cend(),' ');
+        if (tmp > countColumn)
+            countColumn = tmp;
+
+        if (strBuffer.empty()) {
             throw std::invalid_argument("Fill Data.txt only with one empty row between target function and restrictions");
+        }
         countRow++;
         for (auto& item: inequalSymb) {
-            if(strBuffer.contains(item))
+            if(strBuffer.contains(item)) {
                 countInequalSymbols++;
+            }
         }
     }
     matrixInfo[0] = countRow;
-    matrixInfo[1] = std::count(strBuffer.cbegin(), strBuffer.cend(),' ') + countInequalSymbols;
+    matrixInfo[1] = countColumn + countInequalSymbols;
     matrixInfo[2] = countInequalSymbols;
     return matrixInfo;
 }
@@ -118,6 +128,7 @@ void SimplexTable::FillMatrixData(std::vector<int> matrixInfo, std::vector<Simpl
     FillRowZ(strBuffer, file, rowZ);
 
     std::map<std::string, int> coefficient {{"<=", 1}, {">=", -1}, {"=", 0}};
+    int countVar = (matrixInfo[COLUMN_SIZE] - matrixInfo[EXTRA_VAR_SIZE]) - 1;
     while (!file.eof()){
         std::stringstream bufferToLongLong;
         file >> strBuffer;
@@ -131,6 +142,12 @@ void SimplexTable::FillMatrixData(std::vector<int> matrixInfo, std::vector<Simpl
             continue;
         }
         else if (strBuffer == "="){
+            int rowSize = (i % (matrixInfo[COLUMN_SIZE] - matrixInfo[EXTRA_VAR_SIZE]));
+            int count = rowSize % (countVar);
+            if (count != 0)
+                for (int j = 0; j < countVar - count; ++j) {
+                    outDataVector[i++].numerator = coefficient["="];
+                }
             for (int j = 0; j < matrixInfo[EXTRA_VAR_SIZE]; ++j)
                 outDataVector[i++].numerator = coefficient["="];
             continue;
@@ -143,7 +160,7 @@ void SimplexTable::FillMatrixData(std::vector<int> matrixInfo, std::vector<Simpl
     }
 }
 
-std::ostream& operator <<(std::ostream& out, SimplexTable const & data){
+std::ostream& operator <<(std::ostream& out, SimplexTable & data){
     out << "B.S.\t" << "1\t";
     for (int i = 0; i < data.matrix.columnCount - 1; ++i) {
         out << "x_" << i+1 << "\t";

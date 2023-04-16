@@ -21,6 +21,8 @@ public:
     Matrix(int row, int column, std::vector<SimpleFraction> a) : rowCount(row), columnCount(column), matrix(a) {
     }
 
+    Matrix(){}
+
     Matrix(std::string filename);
 
     SimpleFraction operator()(int row, int column){
@@ -42,7 +44,7 @@ public:
     void SwapLine(int const & index1, int const & index2);
 
     void resize(int size);
-
+    void resize(int row, int column);
 };
 
 void CheckMatrixOnZeroLine(Matrix& matrix);

@@ -91,7 +91,7 @@ bool NextSet(std::vector<std::pair<int, int>>& a, int variables, int cells){
 }
 
     void CreateCoordsBS(Matrix& matrix, std::vector<std::vector<std::pair<int, int>>>& coords){
-    int variables = (matrix.columnCount - 1);
+    int variables = (matrix.columnCount - 2);
     int cells = matrix.rowCount;
     std::vector<std::pair<int, int>> sample(cells);
 

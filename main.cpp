@@ -6,19 +6,22 @@
 #include "AllBasicSolutions/FindAllBasicSolutions.h"
 #include "SimplexMethod/SimplexTable.h"
 #include "SimplexMethod/SimplexMethod.h"
+#include "MethodArtificialBasis/ArtificialTable.h"
+#include "MethodArtificialBasis/MethodArtificialBasis.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
 //    Matrix matrix;
     std::vector<std::string> fileName = {{"../MatrixData.txt"}, {"../BasicData.txt"}, {"../Data.txt"}};
     try {
-//        Simplex Method
+        ArtificialTable table = ArtificialTable(fileName[2]);
+        std::cout << table;
+        MethodArtificialBasis(table);
 //        SimplexTable table = SimplexTable(fileName[2]);
-////        std::cout << table;
 //        SimplexMethod(table);
 
-        Matrix m = Matrix(fileName[1]);
-        FindBasicSolutions(m, false);
+//        Matrix m = Matrix(fileName[1]);
+//        FindBasicSolutions(m, false);
     }
     catch(const char* a) {
         std::cout << a;

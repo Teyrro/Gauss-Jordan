@@ -8,11 +8,15 @@
 #include <map>
 #include "Matrix/Matrix.h"
 #include "../SimplexMethod/SimplexTable.h"
+#include "../MethodArtificialBasis/ArtificialTable.h"
 
 void CopyCurrentColumn(Matrix const& matrix, int column, std::map<int, SimpleFraction>& columnChange);
 void CopyCurrentColumn(SimplexTable const& table, int column, std::map<int, SimpleFraction>& columnChange);
+void CopyCurrentColumn(ArtificialTable const& table, int column, std::map<int, SimpleFraction>& columnChange);
 void Transformation(Matrix& matrix, int row, std::pair<int, int>const& coord, std::map<int, SimpleFraction> currentColumn,
                     short isNoSolution, std::vector<std::pair<int, int>> sample);
+void Transformation(ArtificialTable& table, int row, std::pair<int, int>const& coord, std::map<int, SimpleFraction> currentColumn,
+                     short isNoSolution, int rowSize);
 void Transformation(SimplexTable& table, int row, std::pair<int, int>const& coord, std::map<int, SimpleFraction> currentColumn,
                     short isNoSolution, std::vector<std::pair<int, int>> sample);
 #endif //UNTITLED1_STUFFFORGAUSS_H

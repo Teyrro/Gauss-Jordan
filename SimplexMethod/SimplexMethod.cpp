@@ -3,11 +3,11 @@
 #include "SimplexMethod.h"
 #include "../Gauss/StuffForGauss.h"
 
- short FindMinElement(SimplexTable const& table, std::pair<int, int>& coord){
+short FindMinElement(SimplexTable const& table, std::pair<int, int>& coord){
     std::vector<bool> basicVar(table.rowZ.size() - 1);
-     for (auto& item : table.basicVariables) {
+    for (auto& item : table.basicVariables) {
         basicVar[item.second] = true;
-     }
+    }
 
     SimpleFraction tmpItem = SimpleFraction(0, 1);
     int column(-1);
@@ -20,7 +20,7 @@
     }
     if(!tmpData.empty())
         currentColumn = *std::min_element(tmpData.begin(), tmpData.end(), [](auto a,
-                auto b ){ return b.first > a.first; });
+                                                                             auto b ){ return b.first > a.first; });
     else
         return 1;
     column = currentColumn.second;
@@ -29,13 +29,13 @@
     return 0;
 }
 
-short FindMinRestriction(SimplexTable const& table, std::pair<int, int>& coord){
+short FindMinRestriction(SimplexTable& table, std::pair<int, int>& coord){
     std::list<std::pair<SimpleFraction, int>> tmpData;
     int row(-1);
     for (int i = 0; i < table.matrix.rowCount; ++i) {
         SimpleFraction newItem = table(i, coord.second);
         if (newItem > SimpleFraction(0, 1)) {
-            tmpData.push_back({table(i, table.ANSWER_INDEX) / newItem, i});
+            tmpData.emplace_back(table(i, table.ANSWER_INDEX) / newItem, i);
         }
     }
     if(!tmpData.empty())
@@ -72,8 +72,7 @@ void PrintSystemAnswer(SimplexTable& table, std::vector<SimpleFraction>& oldBaci
             break;
         }
         case 2:{
-            throw  std::invalid_argument("The system is not limited from above");
-            break;
+            throw  std::invalid_argument("The function is not limited from above");
         }
         case 3: {
             std::cout << "Z = Z( ";
@@ -91,7 +90,7 @@ void SimplexMethod(SimplexTable& table){
     std::pair<int, int> coord(0, 0);
     std::cout << table;
     short isAlternativeOptimum = false;
-    while (true and isAlternativeOptimum != 3) {
+    while (isAlternativeOptimum != 3) {
         std::map<int, SimpleFraction> currentColumn;
         isAlternativeOptimum = FindMinElement(table, coord);
         if (isAlternativeOptimum == 1)

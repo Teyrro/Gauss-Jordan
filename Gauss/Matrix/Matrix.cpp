@@ -36,6 +36,12 @@ void Matrix::resize(int size){
     matrix.resize(size);
 }
 
+void Matrix::resize(int row, int column){
+    this->rowCount = row;
+    this->columnCount = column;
+    matrix.resize(row*column);
+}
+
 void CheckMatrixOnZeroLine(Matrix& matrix){
     for (int i = matrix.rowCount - 1 ; i >= 0; --i) {
         int countZero(0);

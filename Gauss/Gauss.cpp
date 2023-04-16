@@ -183,7 +183,7 @@ short CheckLineOnZero(Matrix const & matrix, int row, std::vector<std::pair<int,
         if (matrix(row, sample[j].second) == zero) ++countZero;
     }
     if (matrix(row, matrix.columnCount - 1) != zero and countZero == sample.size()) return 1;
-    else if (countZero == sample.size()) return 2;
+    else if (matrix(row, matrix.columnCount - 1) == zero and countZero == sample.size()) return 2;
 
     return 0;
 }
