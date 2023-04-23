@@ -9,13 +9,6 @@
 
 
 void ArtificialTable::UpdateTargetFunction(){
-    auto isContains = [](std::list<std::pair<int, int>> coordArtifBasis, int column) {
-        for (auto &item: coordArtifBasis) {
-            if (item.second == column)
-                return false;
-        }
-        return true;
-    };
 
     std::vector<SimpleFraction> tmpSum(rowZ.size() - 1);
     for (int j(0); j < basicVariables.size(); j++) {
@@ -23,9 +16,9 @@ void ArtificialTable::UpdateTargetFunction(){
         if (rowZ[basicVariables[j].second] != zero)
             for (int i(0); i < rowZ.size() - 1; i++) {
 //                std::cout << tmpSum[i] << " ";
-                if(isContains(coordNewVar, i))
-                    if (matrix(j, i) != zero and i != basicVariables[j].second)
-                        tmpSum[i] = tmpSum[i] + matrix(j, i) * (rowZ[basicVariables[j].second] * -1);
+
+                if (matrix(j, i) != zero and i != basicVariables[j].second and i < coordNewVar.front().second)
+                    tmpSum[i] = tmpSum[i] + matrix(j, i) * (rowZ[basicVariables[j].second] * -1);
             }
         rowZ[rowZ.size()-1] = rowZ[rowZ.size()-1] + (rowZ[basicVariables[j].second] * -1) * matrix(j, matrix.columnCount -1);
         rowZ[basicVariables[j].second] = zero;
@@ -110,7 +103,9 @@ void ArtificialTable::AddColumns(int count){
         }
         a(i, a.columnCount - 1, matrix(i, matrix.columnCount - 1));
     }
+    int lastSize = rowZ.size();
     rowZ.resize(rowZ.size() + count);
+    std::swap(rowZ[lastSize - 1], rowZ[rowZ.size() - 1]);
     rowM.resize(rowM.size() + count);
 
     matrix = std::move(a);

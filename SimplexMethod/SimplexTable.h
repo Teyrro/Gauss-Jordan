@@ -26,7 +26,8 @@ protected:
     virtual void UpdateTargetFunction();
     friend void GaussMod(Matrix& matrix);
     friend std::vector<std::pair<int, int>> FindBasicSolutions(Matrix& outDataMatrix, bool is);
-public:
+    void OffsetToColumnAnswer(int& i, std::vector<int> matrixInfo, int countVar);
+        public:
     enum{
         ANSWER_INDEX
     };

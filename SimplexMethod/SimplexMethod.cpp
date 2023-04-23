@@ -82,6 +82,9 @@ void PrintSystemAnswer(SimplexTable& table, std::vector<SimpleFraction>& oldBaci
             std::cout << "\nwhere 0 <= y <= 1";
             break;
         }
+        case 4: {
+            throw  std::invalid_argument("Restriction system is incompatible");
+        }
     }
 }
 

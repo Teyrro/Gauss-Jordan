@@ -33,10 +33,12 @@ short FindMinElement(ArtificialTable const& table, std::pair<int, int>& coord){
 }
 
 void FindAndDeleteUnnecesssaryColumn(ArtificialTable& table){
-    auto isContains = [](std::list<std::pair<int, int>> coordArtifBasis, int column) {
+    auto isContains = [](std::list<std::pair<int, int>> &coordArtifBasis, int column) {
         for (auto &item: coordArtifBasis) {
-            if (item.second == column)
+            if (item.second == column) {
+                coordArtifBasis.remove(item);
                 return false;
+            }
         }
         return true;
     };
@@ -45,6 +47,7 @@ void FindAndDeleteUnnecesssaryColumn(ArtificialTable& table){
     for (int i(0); i < table.rowM.size(); i++) {
         if (zero != table.rowM[i] and !isContains(table.coordNewVar, i)){
             table.DeleteColumn(i);
+
         }
     }
 }
@@ -75,6 +78,13 @@ void MethodArtificialBasis(ArtificialTable &table){
 
         std::cout << table;
     }
-    SimplexMethod(table);
+    if (!table.coordNewVar.empty())
+        isAlternativeOptimum = 4;
+
+    if (isAlternativeOptimum == 4)
+        PrintSystemAnswer(table, oldBacisSolution, newBaiscSolution, isAlternativeOptimum);
+    else
+        SimplexMethod(table);
 //    PrintSystemAnswer(table, oldBacisSolution, newBaiscSolution, isAlternativeOptimum);
+
 }

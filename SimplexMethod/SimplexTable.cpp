@@ -119,6 +119,14 @@ void SimplexTable::FillRowZ(std::string& strBuffer, std::ifstream& file, std::ve
 
 }
 
+void SimplexTable::OffsetToColumnAnswer(int& i, std::vector<int> matrixInfo, int countVar) {
+    int rowSize = (i % matrixInfo[COLUMN_SIZE]);
+//    rowSize %= (matrixInfo[COLUMN_SIZE] - matrixInfo[EXTRA_VAR_SIZE]);
+    int count = rowSize % (countVar);
+    if (count != 0)
+        i += countVar - count;
+}
+
 void SimplexTable::FillMatrixData(std::vector<int> matrixInfo, std::vector<SimpleFraction>& outDataVector,
                                   std::string fileName){
     std::ifstream file(fileName);
@@ -133,23 +141,16 @@ void SimplexTable::FillMatrixData(std::vector<int> matrixInfo, std::vector<Simpl
         std::stringstream bufferToLongLong;
         file >> strBuffer;
         if (strBuffer == "<=" or strBuffer == ">=") {
-            for (int j = 0; j < mainElement; ++j)
-                outDataVector[i++].numerator = coefficient["="];
+            OffsetToColumnAnswer(i, matrixInfo, countVar);
+            i += mainElement;
             outDataVector[i++].numerator = coefficient[strBuffer];
             mainElement++;
-            for (int j = mainElement; j < matrixInfo[EXTRA_VAR_SIZE]; ++j)
-                outDataVector[i++].numerator = coefficient["="];
+            i += matrixInfo[EXTRA_VAR_SIZE]-mainElement;
             continue;
         }
         else if (strBuffer == "="){
-            int rowSize = (i % (matrixInfo[COLUMN_SIZE] - matrixInfo[EXTRA_VAR_SIZE]));
-            int count = rowSize % (countVar);
-            if (count != 0)
-                for (int j = 0; j < countVar - count; ++j) {
-                    outDataVector[i++].numerator = coefficient["="];
-                }
-            for (int j = 0; j < matrixInfo[EXTRA_VAR_SIZE]; ++j)
-                outDataVector[i++].numerator = coefficient["="];
+            OffsetToColumnAnswer(i, matrixInfo, countVar);
+            i += matrixInfo[EXTRA_VAR_SIZE];
             continue;
         }
         else {

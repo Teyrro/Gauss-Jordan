@@ -62,7 +62,7 @@ std::ostream& operator<<(std::ostream& out, Matrix const& matrix){
     for (int i = 0; i < matrix.rowCount; ++i) {
         for (int j = 0; j < matrix.columnCount; ++j) {
             out << std::setiosflags(std::ios::left);
-            out << std::setw(15) << matrix(i, j);
+            out << std::setw(10) << matrix(i, j);
         }
         out << "\n";
     }
